@@ -31,7 +31,7 @@ public class Network {
      *  Notice that the method receives a String, and returns a User object. */
     public User getUser(String name) {
         for (int i = 0; i < userCount; i++) {
-            if (users[i].getName().equals(name)) {
+            if ((users[i].getName().toLowerCase()).equals(name.toLowerCase())) {
                 return users[i];
             }
         }
@@ -43,8 +43,8 @@ public class Network {
     *  If the given name is already a user in this network, does nothing and returns false;
     *  Otherwise, creates a new user with the given name, adds the user to this network, and returns true. */
     public boolean addUser(String name) {
-        if (userCount < users.length && getUser(name) == null) {
-            users[userCount] = new User(name);
+        if (userCount < users.length && getUser(name.toLowerCase()) == null) {
+            users[userCount] = new User(name.toLowerCase());
             userCount++;
             return true;
         }
@@ -56,6 +56,9 @@ public class Network {
      *  or if the "follows" addition failed for some reason, returns false. */
     public boolean addFollowee(String name1, String name2) {
         if (getUser(name1) == null || getUser(name2) == null) {
+            return false;
+        }
+        if (getUser(name1) == getUser(name2)) {
             return false;
         }
         return getUser(name1).addFollowee(name2);
@@ -82,7 +85,7 @@ public class Network {
     /** Computes and returns the name of the most popular user in this network: 
      *  The user who appears the most in the follow lists of all the users. */
     public String mostPopularUser() {
-        String mostPopularUser = users[0].getName();
+        String mostPopularUser = null;
         for (int i = 1; i < userCount; i++) {
             if (mostPopularUser == null || followeeCount(users[i].getName()) > followeeCount(mostPopularUser)) {
                 mostPopularUser = users[i].getName();
@@ -110,6 +113,6 @@ public class Network {
             result += users[i].toString();
             result += "\n";
         }
-        return result;
+        return result.substring(0, result.length() - 1);
     }
 }
