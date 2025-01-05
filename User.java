@@ -56,7 +56,7 @@
         if (fCount == maxfCount) {
             return false;
         }
-        if (follows(name.toLowerCase())) {
+        if (follows(name)) {
             return false;
         }
         follows[fCount] = name;
